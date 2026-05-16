@@ -1,0 +1,4 @@
+/*
+  Theme tokens live in src/index.css so Tailwind can consume them globally.
+  This file marks the styles boundary for future theme-specific extraction.
+*/

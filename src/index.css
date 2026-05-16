@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --app-bg: #05070d;
+  --panel: rgba(255, 255, 255, 0.05);
+  --accent: #22d3ee;
+}
+
+:root[data-theme="oled"] {
+  --app-bg: #000000;
+  --panel: rgba(255, 255, 255, 0.045);
+  --accent: #ffffff;
+}
+
+:root[data-theme="purple"] {
+  --app-bg: #0b0614;
+  --panel: rgba(168, 85, 247, 0.08);
+  --accent: #c084fc;
+}
+
+:root[data-theme="blue"] {
+  --app-bg: #030712;
+  --panel: rgba(59, 130, 246, 0.08);
+  --accent: #60a5fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--app-bg);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.react-flow__node {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.react-flow__controls button {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(9, 9, 11, 0.92) !important;
+  color: white !important;
+}
+
+.react-flow__minimap {
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.04);
+  }
+}
+
+.animate-aurora {
+  animation: aurora 18s infinite ease-in-out;
+}
