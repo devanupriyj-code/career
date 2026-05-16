@@ -57,6 +57,11 @@ function SectionHeaderNode({ data }) {
 // 3. SUBSECTION NODE (Minimal Glassmorphism Topic)
 function SubsectionNode({ data }) {
   const level = levelStyles[data.level] ?? levelStyles.Beginner
+  const isSelected = Boolean(data.selected)
+
+  const handleSelect = () => {
+    data.onSelect?.(data.topic, data.id)
+  }
 
   const getBorderColor = () => {
     switch (data.level) {
@@ -69,10 +74,22 @@ function SubsectionNode({ data }) {
 
   return (
     <motion.div
-      onClick={() => data.onSelect(data.topic)}
+      role="button"
+      tabIndex={0}
+      onClick={handleSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault()
+          handleSelect()
+        }
+      }}
       whileHover={{ scale: 1.05, y: -5 }}
       whileTap={{ scale: 0.95 }}
-      className={`group relative flex min-w-[240px] max-w-[280px] cursor-pointer flex-col gap-3 rounded-2xl border bg-gradient-to-br ${level.node} p-4 text-left shadow-2xl shadow-black/50 backdrop-blur-xl transition-all duration-300 hover:border-white/40 hover:shadow-cyan-500/20 ${getBorderColor()}`}
+      className={`nodrag nopan nowheel group relative z-10 flex min-w-[240px] max-w-[280px] cursor-pointer flex-col gap-3 rounded-2xl border bg-gradient-to-br ${level.node} p-4 text-left shadow-2xl shadow-black/50 backdrop-blur-xl transition-all duration-300 hover:border-white/40 hover:shadow-cyan-500/20 ${getBorderColor()} ${
+        isSelected
+          ? "ring-2 ring-cyan-400/80 shadow-[0_0_32px_rgba(34,211,238,0.35)] border-cyan-400/50"
+          : ""
+      }`}
     >
       <Handle type="target" position={Position.Top} className="!h-2.5 !w-2.5 !border-zinc-500 !bg-zinc-800" />
       
@@ -107,7 +124,7 @@ const nodeTypes = {
   subsection: SubsectionNode
 }
 
-function RoadmapGraphInner({ roadmap, onSelectTopic }) {
+function RoadmapGraphInner({ roadmap, onSelectTopic, selectedNodeId }) {
   const { fitView } = useReactFlow()
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
@@ -152,6 +169,7 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
         target: sectionId,
         type: 'smoothstep',
         animated: true,
+        interactionWidth: 0,
         style: { stroke: "rgba(34, 211, 238, 0.6)", strokeWidth: 4, filter: 'drop-shadow(0 0 10px rgba(34,211,238,0.5))' },
       })
 
@@ -170,7 +188,8 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
             icon: step.icon || roadmap.icon,
             time: step.weeks || step.estimatedTime,
             topic: step,
-            onSelect: onSelectTopic
+            onSelect: onSelectTopic,
+            selected: false
           },
           width: 240,
           height: 130
@@ -183,6 +202,7 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
           target: topicId,
           type: 'smoothstep',
           animated: true,
+          interactionWidth: 0,
           style: { stroke: "rgba(255, 255, 255, 0.2)", strokeWidth: 2 },
         })
       })
@@ -217,6 +237,16 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
     return () => clearTimeout(timer)
   }, [positionedNodes, positionedEdges, setNodes, setEdges, fitView])
 
+  useEffect(() => {
+    setNodes((current) =>
+      current.map((node) =>
+        node.type === "subsection"
+          ? { ...node, data: { ...node.data, selected: node.id === selectedNodeId } }
+          : node
+      )
+    )
+  }, [selectedNodeId, setNodes])
+
   if (!roadmap || !roadmap.sections || roadmap.sections.length === 0) {
     return (
       <div className="relative flex h-[600px] w-full items-center justify-center overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-2xl backdrop-blur-xl">
@@ -225,8 +255,13 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
     )
   }
 
+  const handleNodeClick = (_, node) => {
+    if (node.type !== "subsection" || !node.data?.topic) return
+    onSelectTopic?.(node.data.topic, node.id)
+  }
+
   return (
-    <div className="relative h-[800px] w-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl lg:h-[900px]">
+    <div className="roadmap-graph-host relative isolate z-0 h-[800px] w-full overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl lg:h-[900px]">
       
       {/* Legend Overlay */}
       <div className="absolute left-6 top-6 z-10 flex flex-col gap-3 rounded-2xl border border-white/10 bg-black/60 p-5 shadow-2xl backdrop-blur-xl pointer-events-none">
@@ -251,6 +286,7 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeClick={handleNodeClick}
         fitView
         fitViewOptions={{ padding: 0.15, duration: 1000 }}
         minZoom={0.1}
@@ -275,10 +311,14 @@ function RoadmapGraphInner({ roadmap, onSelectTopic }) {
   )
 }
 
-function RoadmapGraph({ roadmap, onSelectTopic }) {
+function RoadmapGraph({ roadmap, onSelectTopic, selectedNodeId }) {
   return (
     <ReactFlowProvider>
-      <RoadmapGraphInner roadmap={roadmap} onSelectTopic={onSelectTopic} />
+      <RoadmapGraphInner
+        roadmap={roadmap}
+        onSelectTopic={onSelectTopic}
+        selectedNodeId={selectedNodeId}
+      />
     </ReactFlowProvider>
   )
 }

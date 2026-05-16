@@ -5,8 +5,8 @@ import ParticleLayer from "./ParticleLayer"
 
 export default function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 z-[-1] overflow-hidden bg-black selection:bg-cyan-500/30">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black" />
+    <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden bg-black selection:bg-cyan-500/30">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black" />
       
       <GridBackground />
       <ParticleLayer count={40} />

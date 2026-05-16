@@ -3,6 +3,8 @@ import { BarChart3, BookOpenCheck, Sparkles } from "lucide-react"
 import CareerCard from "../components/CareerCard"
 import BookmarkedTopics from "../components/dashboard/BookmarkedTopics"
 import ComparisonSection from "../components/dashboard/ComparisonSection"
+import AdBanner from "../components/ads/AdBanner"
+import { AD_SLOTS } from "../components/ads/constants"
 import { careers } from "../data/careers"
 import { useBookmarks } from "../hooks/useBookmarks"
 
@@ -45,6 +47,8 @@ function Home() {
         <BookmarkedTopics bookmarks={bookmarks} />
       </motion.section>
 
+      <AdBanner slot={AD_SLOTS.HOMEPAGE_BANNER} className="my-8" />
+
       <section className="mt-10">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -53,6 +57,8 @@ function Home() {
           </div>
           <p className="max-w-md text-sm text-zinc-500">Each track includes interactive graph nodes, timeline planning, curated resources, and projects.</p>
         </div>
+
+        <AdBanner slot={AD_SLOTS.HOMEPAGE_BANNER} className="mb-6" />
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {careers.map((career, index) => (

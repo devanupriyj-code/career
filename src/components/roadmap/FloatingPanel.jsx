@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 
-export default function FloatingPanel({ isOpen, onClose, children }) {
+export default function FloatingPanel({ isOpen, onClose, children, title = "Skill Details" }) {
   // Prevent body scroll when panel is open on mobile
   useEffect(() => {
     if (isOpen) {
@@ -38,7 +38,7 @@ export default function FloatingPanel({ isOpen, onClose, children }) {
           >
             {/* Header / Close button */}
             <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-6 py-4 backdrop-blur-md">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400">Skill Details</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400">{title}</h2>
               <button
                 onClick={onClose}
                 className="rounded-full bg-white/5 p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"

@@ -15,6 +15,7 @@ import {
   Terminal
 } from "lucide-react"
 import ThemeSwitcher from "./ThemeSwitcher"
+import SidebarAd from "../ads/SidebarAd"
 
 const navItems = [
   { label: "Dashboard", to: "/", icon: Home },
@@ -88,6 +89,7 @@ function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen, theme, se
       </nav>
 
       <div className="mt-auto space-y-4">
+        <SidebarAd collapsed={collapsed} />
         {!collapsed && <ThemeSwitcher theme={theme} setTheme={setTheme} themes={themes} />}
         {!collapsed && (
           <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.03] p-4">

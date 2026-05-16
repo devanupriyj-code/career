@@ -55,6 +55,16 @@ input {
   box-shadow: none;
 }
 
+/* Keep decorative edges from stealing clicks on nodes */
+.roadmap-graph-host .react-flow__edge-interaction {
+  pointer-events: none;
+  stroke-width: 0;
+}
+
+.roadmap-graph-host .react-flow__node > * {
+  pointer-events: auto;
+}
+
 .react-flow__controls button {
   border-color: rgba(255, 255, 255, 0.08) !important;
   background: rgba(9, 9, 11, 0.92) !important;
@@ -78,4 +88,14 @@ input {
 
 .animate-aurora {
   animation: aurora 18s infinite ease-in-out;
+}
+
+/* AdSense — reserve space to reduce layout shift */
+.ad-wrapper {
+  contain: layout style;
+}
+
+.ad-wrapper .adsbygoogle {
+  max-width: 100%;
+  overflow: hidden;
 }

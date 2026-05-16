@@ -5,6 +5,7 @@ import CommandPalette from "./CommandPalette"
 import FloatingActions from "./FloatingActions"
 import SearchBar from "./SearchBar"
 import Sidebar from "./Sidebar"
+import FooterAd from "../ads/FooterAd"
 import { careers, getAllTopics } from "../../data/careers"
 import { useTheme } from "../../hooks/useTheme"
 
@@ -44,7 +45,7 @@ function AppShell({ children }) {
         themes={themes}
       />
 
-      <div className={`min-h-screen ${contentOffset} transition-[padding] duration-300`}>
+      <div className={`relative z-0 min-h-screen ${contentOffset} transition-[padding] duration-300`}>
         <header className="sticky top-0 z-20 border-b border-white/5 bg-[var(--app-bg)]/70 px-5 py-4 backdrop-blur-2xl sm:px-8">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="pl-14 lg:pl-0">
@@ -77,7 +78,14 @@ function AppShell({ children }) {
           </div>
         </header>
 
-        <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8">{children}</main>
+        <main className="relative z-10 mx-auto max-w-7xl px-5 py-8 sm:px-8">{children}</main>
+
+        <footer className="relative z-10 mx-auto max-w-7xl border-t border-white/5 px-5 pb-10 pt-6 sm:px-8">
+          <FooterAd />
+          <p className="mt-4 text-center text-xs text-zinc-600">
+            DevPath Studio — interactive developer roadmaps
+          </p>
+        </footer>
       </div>
 
       <CommandPalette open={paletteOpen} setOpen={setPaletteOpen} />

@@ -5,7 +5,7 @@ export default function GridBackground() {
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {/* Animated vertical and horizontal grid lines */}
       <div 
-        className="absolute inset-0 opacity-[0.15]"
+        className="pointer-events-none absolute inset-0 opacity-[0.15]"
         style={{
           backgroundImage: `
             linear-gradient(to right, #8b5cf6 1px, transparent 1px),
@@ -18,7 +18,7 @@ export default function GridBackground() {
       />
       
       {/* Scanning line effect */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent opacity-50 animate-[scan_8s_ease-in-out_infinite]" />
+      <div className="pointer-events-none absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent opacity-50 animate-[scan_8s_ease-in-out_infinite]" />
       
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes scan {
